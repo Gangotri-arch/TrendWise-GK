@@ -53,6 +53,7 @@
       cursor:pointer;
       text-align:left;
       font-size:17px;
+      transition:0.3s;
     }
 
     .option:hover{
@@ -92,10 +93,6 @@
       background:#ff9800;
     }
 
-    .lang-btn{
-      background:#6a1b9a;
-    }
-
     .submit-btn{
       background:#e53935;
     }
@@ -105,6 +102,7 @@
       text-align:center;
       font-size:28px;
       font-weight:bold;
+      color:#222;
     }
 
   </style>
@@ -132,10 +130,6 @@
       Mark Review
     </button>
 
-    <button class="lang-btn" onclick="toggleLanguage()">
-      English / Hindi
-    </button>
-
     <button class="next-btn" onclick="nextQuestion()">
       Next
     </button>
@@ -155,7 +149,6 @@
 const sheetURL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTnrbtJ8lD8k8Unj8NULCyWC6Ov8uJ6OdM-L7LtlFS_y-qvDhc5Kr04y7u4RFug48xQzQ9gIyXA2oxc/pub?output=csv";
 
-
 let questions = [];
 
 let currentQuestion = 0;
@@ -166,25 +159,13 @@ let reviewQuestions = [];
 
 let score = 0;
 
-let currentLanguage = "english";
-
 
 
 // FETCH QUESTIONS
 
 fetch(sheetURL)
 
-.then(response => {
-
-  if(!response.ok){
-
-    throw new Error("Network Error");
-
-  }
-
-  return response.text();
-
-})
+.then(response => response.text())
 
 .then(data => {
 
@@ -195,7 +176,7 @@ fetch(sheetURL)
     const cols =
     row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-    if(!cols || cols.length < 7){
+    if(!cols || cols.length < 6){
 
       return null;
 
@@ -203,31 +184,27 @@ fetch(sheetURL)
 
     return {
 
-      englishQuestion:
+      question:
       cols[0].replace(/"/g, "").trim(),
 
-      hindiQuestion:
-      cols[1].replace(/"/g, "").trim(),
-
       options: [
+
+        cols[1].replace(/"/g, "").trim(),
 
         cols[2].replace(/"/g, "").trim(),
 
         cols[3].replace(/"/g, "").trim(),
 
-        cols[4].replace(/"/g, "").trim(),
-
-        cols[5].replace(/"/g, "").trim()
+        cols[4].replace(/"/g, "").trim()
 
       ],
 
       answer:
-      cols[6].replace(/"/g, "").trim()
+      cols[5].replace(/"/g, "").trim()
 
     };
 
   }).filter(q => q !== null);
-
 
   if(questions.length > 0){
 
@@ -253,17 +230,15 @@ fetch(sheetURL)
 
 
 
+
 // SHOW QUESTION
 
 function showQuestion(){
 
   const q = questions[currentQuestion];
 
-  document.getElementById("question").innerText =
-
-    currentLanguage === "english"
-    ? q.englishQuestion
-    : q.hindiQuestion;
+  document.getElementById("question")
+  .innerText = q.question;
 
   const optionsDiv =
   document.getElementById("options");
@@ -333,7 +308,7 @@ function prevQuestion(){
 
 
 
-// MARK REVIEW
+// MARK FOR REVIEW
 
 function markReview(){
 
@@ -344,22 +319,6 @@ function markReview(){
     alert("Question Marked For Review");
 
   }
-
-}
-
-
-
-// LANGUAGE BUTTON
-
-function toggleLanguage(){
-
-  currentLanguage =
-
-  currentLanguage === "english"
-  ? "hindi"
-  : "english";
-
-  showQuestion();
 
 }
 
@@ -386,6 +345,7 @@ function submitQuiz(){
   `Your Score: ${score} / ${questions.length}`;
 
 }
+
 
 
 
