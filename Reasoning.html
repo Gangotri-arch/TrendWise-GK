@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reasoning Quiz</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background:#f2f2f2;
+            text-align:center;
+            padding:20px;
+        }
+
+        .quiz-box{
+            background:white;
+            width:90%;
+            max-width:700px;
+            margin:auto;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 0 10px gray;
+        }
+
+        h1{
+            color:#333;
+        }
+
+        .option-btn{
+            width:90%;
+            text-align:left;
+            padding:15px;
+            margin:10px auto;
+            border:none;
+            border-radius:10px;
+            background:white;
+            box-shadow:0 0 5px gray;
+            font-size:18px;
+            cursor:pointer;
+            display:block;
+            transition:0.3s;
+        }
+
+        .option-btn:hover{
+            background:#4CAF50;
+            color:white;
+        }
+
+        .controls button{
+            padding:12px 20px;
+            margin:10px;
+            border:none;
+            border-radius:8px;
+            color:white;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        #prevBtn{
+            background:#ff9800;
+        }
+
+        #nextBtn{
+            background:#2196F3;
+        }
+
+        #reviewBtn{
+            background:#9c27b0;
+        }
+
+        #langBtn{
+            background:#4CAF50;
+        }
+
+        #result{
+            font-size:28px;
+            color:green;
+            margin-top:20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+    <h1>Reasoning Quiz</h1>
+
+    <h2 id="question"></h2>
+
+    <div id="answers"></div>
+
+    <div class="controls">
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+        <button id="reviewBtn">Mark for Review</button>
+        <button id="langBtn">हिंदी</button>
+    </div>
+
+    <h2 id="result"></h2>
+
+</div>
+
+<script>
+
+const quiz = [
+
+{
+    questionEN:"Find the odd one",
+    questionHI:"अलग शब्द चुनिए",
+
+    answersEN:["Apple","Mango","Car","Banana"],
+    answersHI:["सेब","आम","कार","केला"],
+
+    correct:"Car"
+},
+
+{
+    questionEN:"Dog is to Puppy as Cat is to ?",
+    questionHI:"कुत्ता : पिल्ला :: बिल्ली : ?",
+
+    answersEN:["Kitten","Tiger","Lion","Cub"],
+    answersHI:["बिल्ली का बच्चा","बाघ","शेर","शावक"],
+
+    correct:"Kitten"
+},
+
+{
+    questionEN:"Which number comes next? 2, 4, 6, 8, ?",
+    questionHI:"अगली संख्या क्या होगी? 2, 4, 6, 8, ?",
+
+    answersEN:["9","10","11","12"],
+    answersHI:["9","10","11","12"],
+
+    correct:"10"
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answeredQuestions = {};
+let reviewQuestions = [];
+let currentLanguage = "EN";
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
+const reviewBtn = document.getElementById("reviewBtn");
+const langBtn = document.getElementById("langBtn");
+const resultEl = document.getElementById("result");
+
+function loadQuestion(){
+
+    const currentQuiz = quiz[currentQuestion];
+
+    if(currentLanguage === "EN"){
+        questionEl.innerText = currentQuiz.questionEN;
+    }else{
+        questionEl.innerText = currentQuiz.questionHI;
+    }
+
+    answersEl.innerHTML = "";
+
+    const options = currentLanguage === "EN"
+    ? currentQuiz.answersEN
+    : currentQuiz.answersHI;
+
+    options.forEach((answer, index) => {
+
+        const btn = document.createElement("button");
+
+        const optionLetters = ["A","B","C","D"];
+
+        btn.innerHTML =
+        "(" + optionLetters[index] + ") " + answer;
+
+        btn.classList.add("option-btn");
+
+        btn.addEventListener("click", function(){
+
+            if(answeredQuestions[currentQuestion]) return;
+
+            answeredQuestions[currentQuestion] = true;
+
+            if(answer === currentQuiz.correct){
+
+                score++;
+
+                btn.style.background = "green";
+                btn.style.color = "white";
+
+            }else{
+
+                btn.style.background = "red";
+                btn.style.color = "white";
+
+            }
+
+        });
+
+        answersEl.appendChild(btn);
+
+    });
+
+}
+
+nextBtn.addEventListener("click", function(){
+
+    if(currentQuestion < quiz.length - 1){
+
+        currentQuestion++;
+        loadQuestion();
+
+    }else{
+
+        showResult();
+
+    }
+
+});
+
+prevBtn.addEventListener("click", function(){
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+        loadQuestion();
+
+    }
+
+});
+
+reviewBtn.addEventListener("click", function(){
+
+    if(!reviewQuestions.includes(currentQuestion)){
+
+        reviewQuestions.push(currentQuestion);
+
+        alert("Question marked for review");
+
+    }
+
+});
+
+langBtn.addEventListener("click", function(){
+
+    if(currentLanguage === "EN"){
+
+        currentLanguage = "HI";
+        langBtn.innerText = "English";
+
+    }else{
+
+        currentLanguage = "EN";
+        langBtn.innerText = "हिंदी";
+
+    }
+
+    loadQuestion();
+
+});
+
+function showResult(){
+
+    questionEl.style.display = "none";
+    answersEl.style.display = "none";
+    nextBtn.style.display = "none";
+    prevBtn.style.display = "none";
+    reviewBtn.style.display = "none";
+    langBtn.style.display = "none";
+
+    resultEl.innerHTML =
+    "Your Score: " + score + " / " + quiz.length +
+    "<br><br>Marked for Review: " + reviewQuestions.length;
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>

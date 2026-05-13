@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art & Culture Quiz</title>
+
+  <style>
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f0f2f5;
+      margin:0;
+      padding:20px;
+    }
+
+    .quiz-container{
+      max-width:750px;
+      margin:auto;
+      background:white;
+      padding:20px;
+      border-radius:12px;
+      box-shadow:0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h1{
+      text-align:center;
+      color:#333;
+    }
+
+    #timer{
+      text-align:right;
+      font-size:22px;
+      font-weight:bold;
+      color:red;
+      margin-bottom:15px;
+    }
+
+    #question{
+      font-size:24px;
+      font-weight:bold;
+      margin-bottom:20px;
+      color:#222;
+    }
+
+    .option{
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border:none;
+      border-radius:8px;
+      background:#e7e7e7;
+      cursor:pointer;
+      text-align:left;
+      font-size:17px;
+      transition:0.3s;
+    }
+
+    .option:hover{
+      background:#d5d5d5;
+    }
+
+    .selected{
+      background:#87cefa !important;
+    }
+
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:20px;
+      justify-content:center;
+    }
+
+    button{
+      padding:12px 18px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:16px;
+      color:white;
+    }
+
+    .prev-btn{
+      background:#007bff;
+    }
+
+    .next-btn{
+      background:#28a745;
+    }
+
+    .review-btn{
+      background:#ff9800;
+    }
+
+    .lang-btn{
+      background:#6a1b9a;
+    }
+
+    .submit-btn{
+      background:#e53935;
+    }
+
+    #result{
+      text-align:center;
+      margin-top:25px;
+      font-size:28px;
+      font-weight:bold;
+      color:#222;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+  <h1>Art & Culture Quiz</h1>
+
+  <div id="timer">10:00</div>
+
+  <div id="question">Loading Question...</div>
+
+  <div id="options"></div>
+
+  <div class="buttons">
+
+    <button class="prev-btn" onclick="prevQuestion()">Previous</button>
+
+    <button class="review-btn" onclick="markReview()">Mark for Review</button>
+
+    <button class="lang-btn" onclick="toggleLanguage()">English / Hindi</button>
+
+    <button class="next-btn" onclick="nextQuestion()">Next</button>
+
+    <button class="submit-btn" onclick="submitQuiz()">Submit</button>
+
+  </div>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTnrbtJ8lD8k8Unj8NULCyWC6Ov8uJ6OdM-L7LtlFS_y-qvDhc5Kr04y7u4RFug48xQzQ9gIyXA2oxc/pub?output=csv";
+
+let questions = [];
+let currentQuestion = 0;
+let userAnswers = [];
+let reviewQuestions = [];
+let score = 0;
+let currentLanguage = "english";
+
+
+// FETCH QUESTIONS FROM GOOGLE SHEET
+
+fetch(sheetURL)
+
+.then(response => response.text())
+
+.then(data => {
+
+    const rows = data.trim().split("\n").slice(1);
+
+    questions = rows.map(row => {
+
+        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+        if (!cols || cols.length < 7) return null;
+
+        return {
+
+            englishQuestion:
+              cols[0].replace(/"/g, "").trim(),
+
+            hindiQuestion:
+              cols[1].replace(/"/g, "").trim(),
+
+            options: [
+
+              cols[2].replace(/"/g, "").trim(),
+
+              cols[3].replace(/"/g, "").trim(),
+
+              cols[4].replace(/"/g, "").trim(),
+
+              cols[5].replace(/"/g, "").trim()
+
+            ],
+
+            answer:
+              cols[6].replace(/"/g, "").trim()
+
+        };
+
+    }).filter(q => q !== null);
+
+    if(questions.length > 0){
+
+        showQuestion();
+
+    }else{
+
+        document.getElementById("question").innerHTML =
+        "No Questions Found";
+
+    }
+
+})
+
+.catch(error => {
+
+    document.getElementById("question").innerHTML =
+    "Failed To Load Questions";
+
+    console.log(error);
+
+});
+
+
+
+
+// SHOW QUESTION
+
+function showQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("question").innerText =
+
+      currentLanguage === "english"
+      ? q.englishQuestion
+      : q.hindiQuestion;
+
+    const optionsDiv =
+      document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach(option => {
+
+        const btn = document.createElement("button");
+
+        btn.classList.add("option");
+
+        btn.innerText = option;
+
+        if(userAnswers[currentQuestion] === option){
+
+            btn.classList.add("selected");
+
+        }
+
+        btn.onclick = () => {
+
+            userAnswers[currentQuestion] = option;
+
+            showQuestion();
+
+        };
+
+        optionsDiv.appendChild(btn);
+
+    });
+
+}
+
+
+
+// NEXT QUESTION
+
+function nextQuestion(){
+
+    if(currentQuestion < questions.length - 1){
+
+        currentQuestion++;
+
+        showQuestion();
+
+    }
+
+}
+
+
+
+// PREVIOUS QUESTION
+
+function prevQuestion(){
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        showQuestion();
+
+    }
+
+}
+
+
+
+// MARK FOR REVIEW
+
+function markReview(){
+
+    if(!reviewQuestions.includes(currentQuestion)){
+
+        reviewQuestions.push(currentQuestion);
+
+        alert("Question Marked For Review");
+
+    }
+
+}
+
+
+
+// LANGUAGE TOGGLE
+
+function toggleLanguage(){
+
+    currentLanguage =
+    currentLanguage === "english"
+    ? "hindi"
+    : "english";
+
+    showQuestion();
+
+}
+
+
+
+// SUBMIT QUIZ
+
+function submitQuiz(){
+
+    score = 0;
+
+    questions.forEach((q,index)=>{
+
+        if(userAnswers[index] === q.answer){
+
+            score++;
+
+        }
+
+    });
+
+    document.getElementById("result").innerHTML =
+    `Your Score: ${score} / ${questions.length}`;
+
+}
+
+
+
+// TIMER
+
+let timeLeft = 600;
+
+const timer = setInterval(()=>{
+
+    let minutes = Math.floor(timeLeft / 60);
+
+    let seconds = timeLeft % 60;
+
+    seconds = seconds < 10
+    ? "0" + seconds
+    : seconds;
+
+    document.getElementById("timer").innerText =
+    `${minutes}:${seconds}`;
+
+    timeLeft--;
+
+    if(timeLeft < 0){
+
+        clearInterval(timer);
+
+        submitQuiz();
+
+    }
+
+},1000);
+
+</script>
+
+</body>
+</html>

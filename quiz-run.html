@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GK Topic Quiz</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#f4f7fb;
+  margin:0;
+}
+
+header{
+  background:#007bff;
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+
+.lang{
+  text-align:center;
+  margin:10px;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+  cursor:pointer;
+}
+
+.container{
+  width:90%;
+  margin:auto;
+}
+
+.box{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-top:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.option{
+  display:block;
+  margin:8px 0;
+}
+
+.review{
+  background:orange;
+}
+
+.timer{
+  text-align:right;
+  color:red;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>📝 Topic Wise GK Quiz</h2>
+</header>
+
+<div class="lang">
+  <button onclick="setLang('en')">English</button>
+  <button onclick="setLang('hi')">हिंदी</button>
+</div>
+
+<div class="container">
+
+<div class="timer">
+Time Left: <span id="time">60</span> sec
+</div>
+
+<div class="box">
+
+  <div id="q"></div>
+
+  <label class="option"><input type="radio" name="opt" value="a"> <span id="a"></span></label>
+  <label class="option"><input type="radio" name="opt" value="b"> <span id="b"></span></label>
+  <label class="option"><input type="radio" name="opt" value="c"> <span id="c"></span></label>
+  <label class="option"><input type="radio" name="opt" value="d"> <span id="d"></span></label>
+
+  <div>
+    <button onclick="prev()">Previous</button>
+    <button onclick="next()">Next</button>
+    <button class="review" onclick="mark()">Mark Review</button>
+    <button onclick="submit()">Submit</button>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+
+// GET TOPIC FROM URL
+let url = new URLSearchParams(window.location.search);
+let topic = url.get("topic");
+
+// LANGUAGE
+let lang = "en";
+
+// QUIZ DATA (ADD YOUR QUESTIONS HERE)
+let data = {
+
+history: [
+  {
+    q_en:"Who built Taj Mahal?",
+    q_hi:"ताजमहल किसने बनवाया?",
+    a_en:"Shah Jahan",
+    a_hi:"शाहजहाँ",
+    b_en:"Akbar",
+    b_hi:"अकबर",
+    c_en:"Babur",
+    c_hi:"बाबर",
+    d_en:"Aurangzeb",
+    d_hi:"औरंगजेब",
+    correct:"a"
+  },
+  {
+    q_en:"Battle of Plassey year?",
+    q_hi:"प्लासी का युद्ध कब हुआ?",
+    a_en:"1757",
+    a_hi:"1757",
+    b_en:"1857",
+    b_hi:"1857",
+    c_en:"1764",
+    c_hi:"1764",
+    d_en:"1772",
+    d_hi:"1772",
+    correct:"a"
+  }
+],
+
+geography: [
+  {
+    q_en:"Largest river in India?",
+    q_hi:"भारत की सबसे बड़ी नदी कौन सी है?",
+    a_en:"Ganga",
+    a_hi:"गंगा",
+    b_en:"Yamuna",
+    b_hi:"यमुना",
+    c_en:"Godavari",
+    c_hi:"गोदावरी",
+    d_en:"Narmada",
+    d_hi:"नर्मदा",
+    correct:"a"
+  }
+]
+
+};
+
+// INIT
+let quiz = data[topic] || [];
+let i = 0;
+let score = 0;
+let review = [];
+
+// LANGUAGE SWITCH
+function setLang(l){
+  lang = l;
+  load();
+}
+
+// LOAD QUESTION
+function load(){
+
+  let q = quiz[i];
+
+  if(!q){
+    document.getElementById("q").innerText = "No Quiz Found!";
+    return;
+  }
+
+  document.getElementById("q").innerText =
+    (i+1)+". "+(lang==="en" ? q.q_en : q.q_hi);
+
+  document.getElementById("a").innerText =
+    lang==="en" ? q.a_en : q.a_hi;
+
+  document.getElementById("b").innerText =
+    lang==="en" ? q.b_en : q.b_hi;
+
+  document.getElementById("c").innerText =
+    lang==="en" ? q.c_en : q.c_hi;
+
+  document.getElementById("d").innerText =
+    lang==="en" ? q.d_en : q.d_hi;
+
+  document.querySelectorAll("input").forEach(e=>e.checked=false);
+}
+
+// NEXT
+function next(){
+  check();
+  if(i < quiz.length-1){
+    i++;
+    load();
+  }
+}
+
+// PREVIOUS
+function prev(){
+  if(i > 0){
+    i--;
+    load();
+  }
+}
+
+// CHECK ANSWER
+function check(){
+  let ans = document.querySelector("input[name=opt]:checked");
+  if(ans && ans.value === quiz[i].correct){
+    score++;
+  }
+}
+
+// MARK REVIEW
+function mark(){
+  review.push(i);
+  alert("Marked for review");
+}
+
+// SUBMIT
+function submit(){
+  alert("Quiz Finished!\nScore: "+score+"/"+quiz.length);
+}
+
+// TIMER
+let t = 60;
+setInterval(()=>{
+  t--;
+  document.getElementById("time").innerText = t;
+  if(t <= 0){
+    submit();
+  }
+},1000);
+
+// START
+load();
+
+</script>
+
+</body>
+</html>

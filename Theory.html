@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theory - TrendWise GK</title>
+
+<style>
+
+body{
+  font-family: Arial;
+  background:#f4f7fb;
+  margin:0;
+}
+
+header{
+  background:#007bff;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+
+.lang-btn{
+  text-align:center;
+  margin:15px;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:#007bff;
+  color:white;
+}
+
+.subject{
+  background:white;
+  margin:15px;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.topic{
+  margin-top:15px;
+  padding:10px;
+  border-left:4px solid #007bff;
+}
+
+.en{
+  display:block;
+}
+
+.hi{
+  display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>
+    <span class="en">📘 Topic Wise Theory</span>
+    <span class="hi">📘 विषय अनुसार थ्योरी</span>
+  </h1>
+</header>
+
+<!-- LANGUAGE BUTTON -->
+<div class="lang-btn">
+  <button onclick="setLang('en')">English</button>
+  <button onclick="setLang('hi')">हिंदी</button>
+</div>
+
+<!-- SUBJECT 1 -->
+<div class="subject">
+
+  <h2>
+    <span class="en">History</span>
+    <span class="hi">इतिहास</span>
+  </h2>
+
+  <div class="topic">
+
+    <h3>
+      <span class="en">Indus Valley Civilization</span>
+      <span class="hi">सिंधु घाटी सभ्यता</span>
+    </h3>
+
+    <p class="en">
+      The Indus Valley Civilization was one of the oldest civilizations in the world. It developed around 2500 BCE.
+    </p>
+
+    <p class="hi">
+      सिंधु घाटी सभ्यता दुनिया की सबसे प्राचीन सभ्यताओं में से एक थी। यह लगभग 2500 ईसा पूर्व विकसित हुई।
+    </p>
+
+  </div>
+
+</div>
+
+<!-- SUBJECT 2 -->
+<div class="subject">
+
+  <h2>
+    <span class="en">Geography</span>
+    <span class="hi">भूगोल</span>
+  </h2>
+
+  <div class="topic">
+
+    <h3>
+      <span class="en">India Location</span>
+      <span class="hi">भारत की स्थिति</span>
+    </h3>
+
+    <p class="en">
+      India is located in South Asia and is surrounded by the Himalayas in the north.
+    </p>
+
+    <p class="hi">
+      भारत दक्षिण एशिया में स्थित है और उत्तर में हिमालय से घिरा हुआ है।
+    </p>
+
+  </div>
+
+</div>
+
+<script>
+
+function setLang(lang){
+
+  let en = document.querySelectorAll(".en");
+  let hi = document.querySelectorAll(".hi");
+
+  if(lang === "en"){
+    en.forEach(e => e.style.display = "block");
+    hi.forEach(h => h.style.display = "none");
+  }
+
+  if(lang === "hi"){
+    en.forEach(e => e.style.display = "none");
+    hi.forEach(h => h.style.display = "block");
+  }
+
+}
+
+</script>
+
+</body>
+</html>

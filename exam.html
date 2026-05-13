@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GK Exam System</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#eef2f7;
+  margin:0;
+}
+
+header{
+  background:#1e88e5;
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+
+.container{
+  width:90%;
+  margin:auto;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  margin-top:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+button{
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  background:#1e88e5;
+  color:white;
+  cursor:pointer;
+}
+
+.review{
+  background:orange;
+}
+
+.option{
+  display:block;
+  margin:8px 0;
+}
+
+.timer{
+  float:right;
+  color:red;
+  font-weight:bold;
+}
+
+.hide{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>📘 GK Exam System</h2>
+</header>
+
+<div class="container">
+
+<!-- START -->
+<div class="card" id="startBox">
+  <h3>Enter Name</h3>
+  <input id="name" placeholder="Your Name">
+  <button onclick="start()">Start Exam</button>
+</div>
+
+<!-- EXAM -->
+<div class="card hide" id="examBox">
+
+  <div class="timer">⏱ Time: <span id="time">300</span> sec</div>
+
+  <h3 id="q"></h3>
+
+  <label class="option"><input type="radio" name="opt" value="a"> <span id="a"></span></label>
+  <label class="option"><input type="radio" name="opt" value="b"> <span id="b"></span></label>
+  <label class="option"><input type="radio" name="opt" value="c"> <span id="c"></span></label>
+  <label class="option"><input type="radio" name="opt" value="d"> <span id="d"></span></label>
+
+  <button onclick="prev()">Previous</button>
+  <button onclick="next()">Next</button>
+  <button class="review" onclick="mark()">Mark Review</button>
+  <button onclick="submit()">Submit</button>
+
+</div>
+
+<!-- RESULT -->
+<div class="card hide" id="resultBox"></div>
+
+</div>
+
+<script>
+
+// QUESTIONS
+let quiz = [
+  {
+    q:"Capital of India?",
+    a:"Delhi",
+    b:"Mumbai",
+    c:"Kolkata",
+    d:"Chennai",
+    correct:"a"
+  },
+  {
+    q:"Taj Mahal built by?",
+    a:"Akbar",
+    b:"Shah Jahan",
+    c:"Babur",
+    d:"Aurangzeb",
+    correct:"b"
+  },
+  {
+    q:"ISRO stands for?",
+    a:"Space Org",
+    b:"Indian Space Research Org",
+    c:"Rocket Org",
+    d:"Science Org",
+    correct:"b"
+  }
+];
+
+let i=0;
+let score=0;
+let negative=0;
+let name="";
+let marked=[];
+
+let timer;
+
+// START EXAM
+function start(){
+
+  name = document.getElementById("name").value;
+
+  if(name==""){
+    alert("Enter Name");
+    return;
+  }
+
+  document.getElementById("startBox").classList.add("hide");
+  document.getElementById("examBox").classList.remove("hide");
+
+  load();
+
+  timer = setInterval(()=>{
+    let t = document.getElementById("time").innerText;
+
+    if(t>0){
+      document.getElementById("time").innerText = t-1;
+    }else{
+      submit();
+    }
+
+  },1000);
+}
+
+// LOAD QUESTION
+function load(){
+
+  let q = quiz[i];
+
+  document.getElementById("q").innerText = (i+1)+". "+q.q;
+
+  document.getElementById("a").innerText = q.a;
+  document.getElementById("b").innerText = q.b;
+  document.getElementById("c").innerText = q.c;
+  document.getElementById("d").innerText = q.d;
+
+  document.querySelectorAll("input").forEach(e=>e.checked=false);
+}
+
+// NEXT
+function next(){
+  check();
+  if(i<quiz.length-1){
+    i++;
+    load();
+  }
+}
+
+// PREVIOUS
+function prev(){
+  if(i>0){
+    i--;
+    load();
+  }
+}
+
+// CHECK ANSWER
+function check(){
+  let ans = document.querySelector("input[name=opt]:checked");
+
+  if(ans){
+    if(ans.value === quiz[i].correct){
+      score++;
+    }else{
+      negative += 0.25;
+    }
+  }
+}
+
+// MARK REVIEW
+function mark(){
+  marked.push(i);
+  alert("Marked for review");
+}
+
+// SUBMIT (FIXED PROPER RESULT)
+function submit(){
+
+  clearInterval(timer);
+
+  let final = score - negative;
+
+  document.getElementById("examBox").classList.add("hide");
+  document.getElementById("resultBox").classList.remove("hide");
+
+  document.getElementById("resultBox").innerHTML = `
+    <h2>🎯 Exam Result</h2>
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Total Questions:</b> ${quiz.length}</p>
+    <p><b>Correct:</b> ${score}</p>
+    <p><b>Wrong Penalty:</b> ${negative}</p>
+    <p><b>Final Score:</b> ${final}</p>
+
+    <button onclick="location.reload()">🔄 Try Again</button>
+  `;
+}
+
+</script>
+
+</body>
+</html>

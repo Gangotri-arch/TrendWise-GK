@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendWise GK</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      color:#333;
+    }
+
+    header{
+      background:linear-gradient(135deg,#007bff,#00c6ff);
+      color:white;
+      text-align:center;
+      padding:60px 20px;
+    }
+
+    header h1{
+      font-size:48px;
+      margin-bottom:15px;
+    }
+
+    header p{
+      font-size:20px;
+      margin-bottom:25px;
+    }
+
+    .hero-btn{
+      padding:12px 25px;
+      background:white;
+      color:#007bff;
+      border:none;
+      border-radius:8px;
+      font-size:18px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .section-title{
+      text-align:center;
+      margin:50px 0 30px;
+      font-size:32px;
+      color:#007bff;
+    }
+
+    .cards{
+      width:90%;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+      margin-bottom:60px;
+    }
+
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+    }
+
+    .card h2{
+      margin:15px 0;
+      color:#007bff;
+    }
+
+    .card p{
+      color:#555;
+      margin-bottom:15px;
+    }
+
+    .card button{
+      padding:10px 20px;
+      border:none;
+      background:#007bff;
+      color:white;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    footer{
+      background:#222;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>📘 TrendWise GK</h1>
+    <p>Learn • Practice • Achieve</p>
+
+    <a href="quiz.html">
+      <button class="hero-btn">Start Learning</button>
+    </a>
+  </header>
+
+  <h1 class="section-title">Our Features</h1>
+
+  <div class="cards">
+
+    <div class="card">
+      <h2>📘 Theory</h2>
+      <p>Topic-wise detailed notes for easy learning.</p>
+
+      <a href="theory.html">
+        <button>Read Theory</button>
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>📝 Quiz</h2>
+      <p>Practice MCQs and improve your knowledge.</p>
+
+      <a href="quiz.html">
+        <button>Start Quiz</button>
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>🎯 Practice Test</h2>
+      <p>Attempt full mock tests and track performance.</p>
+
+      <a href="test.html">
+        <button>Practice Test</button>
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>🔥 Current Affairs</h2>
+      <p>Stay updated with daily current affairs.</p>
+
+      <a href="current.html">
+        <button>Current Affairs</button>
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>Maths</h2>
+      <p>Learn and Practice.</p>
+
+      <a href="maths.html">
+        <button>Practice Questions and Theroy</button>
+      </a>
+     </div>
+
+    <div class="card">
+      <h2>Reasoning</h2>
+      <p>Learn and Practice.</p>
+
+      <a href="Reasoning.html">
+        <button>Practice Questions and Theroy</button>
+      </a>
+     </div>
+
+
+  </div>
+
+  <footer>
+    <p>© 2026 TrendWise GK | All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>

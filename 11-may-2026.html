@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 May 2026</title>
+
+<style>
+
+body{
+  font-family: Arial;
+  background:#f4f7fb;
+  margin:0;
+}
+
+header{
+  background:#007bff;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+
+.lang{
+  text-align:center;
+  margin:15px;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+}
+
+.container{
+  width:90%;
+  margin:auto;
+}
+
+.news{
+  background:white;
+  margin-bottom:15px;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.en{ display:block; }
+.hi{ display:none; }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📅 11 May 2026</h1>
+</header>
+
+<!-- LANGUAGE BUTTON -->
+<div class="lang">
+  <button onclick="setLang('en')">English</button>
+  <button onclick="setLang('hi')">हिंदी</button>
+</div>
+
+<div class="container">
+
+  <div class="news">
+    <h3>
+      <span class="en">India launches new education scheme</span>
+      <span class="hi">भारत ने नई शिक्षा योजना शुरू की</span>
+    </h3>
+
+    <p class="en">Government launched a digital education program.</p>
+    <p class="hi">सरकार ने डिजिटल शिक्षा कार्यक्रम शुरू किया।</p>
+  </div>
+
+  <div class="news">
+    <h3>
+      <span class="en">ISRO satellite mission</span>
+      <span class="hi">इसरो सैटेलाइट मिशन</span>
+    </h3>
+
+    <p class="en">ISRO is preparing a communication satellite.</p>
+    <p class="hi">इसरो संचार उपग्रह तैयार कर रहा है।</p>
+  </div>
+
+</div>
+
+<script>
+
+function setLang(lang){
+
+  let en = document.querySelectorAll(".en");
+  let hi = document.querySelectorAll(".hi");
+
+  if(lang === "en"){
+    en.forEach(e => e.style.display = "block");
+    hi.forEach(h => h.style.display = "none");
+  }
+
+  if(lang === "hi"){
+    en.forEach(e => e.style.display = "none");
+    hi.forEach(h => h.style.display = "block");
+  }
+
+}
+
+</script>
+
+</body>
+</html>
