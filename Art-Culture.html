@@ -1,50 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Art Culture Quiz</title>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Art & Culture Quiz</title>
 
   <style>
 
     body{
-      font-family:Arial;
+      font-family: Arial, sans-serif;
       background:#f2f2f2;
+      margin:0;
       padding:20px;
     }
 
-    .quiz-box{
-      max-width:700px;
+    .quiz-container{
+      max-width:800px;
       margin:auto;
       background:white;
       padding:20px;
-      border-radius:10px;
+      border-radius:12px;
+      box-shadow:0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+      color:#333;
     }
 
     #question{
       font-size:24px;
       font-weight:bold;
       margin-bottom:20px;
+      color:#222;
     }
 
     .option{
       display:block;
       width:100%;
+      padding:14px;
       margin:10px 0;
-      padding:12px;
       border:none;
       border-radius:8px;
       background:#e0e0e0;
       cursor:pointer;
       text-align:left;
-      font-size:16px;
+      font-size:17px;
+      transition:0.3s;
+    }
+
+    .option:hover{
+      background:#d0d0d0;
     }
 
     .selected{
       background:skyblue !important;
     }
 
+    .buttons{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
     button{
-      padding:10px 15px;
-      margin:5px;
+      padding:12px 18px;
       border:none;
       border-radius:8px;
       cursor:pointer;
@@ -52,23 +79,24 @@
       font-size:16px;
     }
 
-    .next{
-      background:green;
+    .prev-btn{
+      background:#007bff;
     }
 
-    .prev{
-      background:blue;
+    .next-btn{
+      background:#28a745;
     }
 
-    .submit{
-      background:red;
+    .submit-btn{
+      background:#dc3545;
     }
 
     #result{
-      margin-top:20px;
+      margin-top:25px;
+      text-align:center;
       font-size:28px;
       font-weight:bold;
-      text-align:center;
+      color:#222;
     }
 
   </style>
@@ -77,25 +105,45 @@
 
 <body>
 
-<div class="quiz-box">
+<div class="quiz-container">
 
   <h1>Art & Culture Quiz</h1>
 
-  <div id="question">Loading Questions...</div>
+  <div id="question">
+
+    Loading Questions...
+
+  </div>
 
   <div id="options"></div>
 
-  <button class="prev" onclick="prevQuestion()">
-    Previous
-  </button>
+  <div class="buttons">
 
-  <button class="next" onclick="nextQuestion()">
-    Next
-  </button>
+    <button
+    class="prev-btn"
+    onclick="prevQuestion()">
 
-  <button class="submit" onclick="submitQuiz()">
-    Submit
-  </button>
+      Previous
+
+    </button>
+
+    <button
+    class="next-btn"
+    onclick="nextQuestion()">
+
+      Next
+
+    </button>
+
+    <button
+    class="submit-btn"
+    onclick="submitQuiz()">
+
+      Submit
+
+    </button>
+
+  </div>
 
   <div id="result"></div>
 
@@ -112,15 +160,16 @@ let currentQuestion = 0;
 
 let answers = [];
 
-async function loadQuiz(){
+async function loadQuiz() {
 
-  try{
+  try {
 
     const response = await fetch(csvUrl);
 
     const data = await response.text();
 
-    const rows = data.trim().split("\n").slice(1);
+    const rows =
+    data.trim().split("\n").slice(1);
 
     questions = rows.map(row => {
 
@@ -149,10 +198,11 @@ async function loadQuiz(){
 
   }
 
-  catch(error){
+  catch(error) {
 
     document.getElementById("question")
-    .innerText = "Failed To Load Questions";
+    .innerText =
+    "Failed To Load Questions";
 
     console.log(error);
 
@@ -160,18 +210,19 @@ async function loadQuiz(){
 
 }
 
-function showQuestion(){
+function showQuestion() {
 
-  const q = questions[currentQuestion];
-
-  if(!q){
+  if(questions.length === 0){
 
     document.getElementById("question")
-    .innerText = "No Questions Found";
+    .innerText =
+    "No Questions Found";
 
     return;
 
   }
+
+  const q = questions[currentQuestion];
 
   document.getElementById("question")
   .innerText = q.question;
@@ -186,9 +237,9 @@ function showQuestion(){
     const btn =
     document.createElement("button");
 
-    btn.className = "option";
-
     btn.innerText = option;
+
+    btn.className = "option";
 
     if(answers[currentQuestion] === option){
 
@@ -250,7 +301,10 @@ function submitQuiz(){
 
   document.getElementById("result")
   .innerText =
-  "Your Score: " + score + "/" + questions.length;
+  "Your Score: "
+  + score +
+  "/" +
+  questions.length;
 
 }
 
@@ -259,4 +313,5 @@ loadQuiz();
 </script>
 
 </body>
+
 </html>
