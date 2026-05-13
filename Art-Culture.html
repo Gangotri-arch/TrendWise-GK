@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Art & Culture Quiz</title>
 
   <style>
 
     body{
       font-family: Arial, sans-serif;
-      background:#f0f2f5;
+      background:#f2f2f2;
       margin:0;
       padding:20px;
     }
@@ -33,7 +33,7 @@
       font-size:22px;
       font-weight:bold;
       color:red;
-      margin-bottom:15px;
+      margin-bottom:20px;
     }
 
     #question{
@@ -49,11 +49,10 @@
       margin:10px 0;
       border:none;
       border-radius:8px;
-      background:#e7e7e7;
+      background:#e8e8e8;
       cursor:pointer;
       text-align:left;
       font-size:17px;
-      transition:0.3s;
     }
 
     .option:hover{
@@ -66,19 +65,19 @@
 
     .buttons{
       display:flex;
-      gap:10px;
       flex-wrap:wrap;
-      margin-top:20px;
+      gap:10px;
       justify-content:center;
+      margin-top:20px;
     }
 
     button{
       padding:12px 18px;
       border:none;
       border-radius:8px;
+      color:white;
       cursor:pointer;
       font-size:16px;
-      color:white;
     }
 
     .prev-btn{
@@ -102,11 +101,10 @@
     }
 
     #result{
-      text-align:center;
       margin-top:25px;
+      text-align:center;
       font-size:28px;
       font-weight:bold;
-      color:#222;
     }
 
   </style>
@@ -120,21 +118,31 @@
 
   <div id="timer">10:00</div>
 
-  <div id="question">Loading Question...</div>
+  <div id="question">Loading Questions...</div>
 
   <div id="options"></div>
 
   <div class="buttons">
 
-    <button class="prev-btn" onclick="prevQuestion()">Previous</button>
+    <button class="prev-btn" onclick="prevQuestion()">
+      Previous
+    </button>
 
-    <button class="review-btn" onclick="markReview()">Mark for Review</button>
+    <button class="review-btn" onclick="markReview()">
+      Mark Review
+    </button>
 
-    <button class="lang-btn" onclick="toggleLanguage()">English / Hindi</button>
+    <button class="lang-btn" onclick="toggleLanguage()">
+      English / Hindi
+    </button>
 
-    <button class="next-btn" onclick="nextQuestion()">Next</button>
+    <button class="next-btn" onclick="nextQuestion()">
+      Next
+    </button>
 
-    <button class="submit-btn" onclick="submitQuiz()">Submit</button>
+    <button class="submit-btn" onclick="submitQuiz()">
+      Submit
+    </button>
 
   </div>
 
@@ -147,79 +155,101 @@
 const sheetURL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTnrbtJ8lD8k8Unj8NULCyWC6Ov8uJ6OdM-L7LtlFS_y-qvDhc5Kr04y7u4RFug48xQzQ9gIyXA2oxc/pub?output=csv";
 
+
 let questions = [];
+
 let currentQuestion = 0;
+
 let userAnswers = [];
+
 let reviewQuestions = [];
+
 let score = 0;
+
 let currentLanguage = "english";
 
 
-// FETCH QUESTIONS FROM GOOGLE SHEET
+
+// FETCH QUESTIONS
 
 fetch(sheetURL)
 
-.then(response => response.text())
+.then(response => {
+
+  if(!response.ok){
+
+    throw new Error("Network Error");
+
+  }
+
+  return response.text();
+
+})
 
 .then(data => {
 
-    const rows = data.trim().split("\n").slice(1);
+  const rows = data.trim().split("\n").slice(1);
 
-    questions = rows.map(row => {
+  questions = rows.map(row => {
 
-        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+    const cols =
+    row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-        if (!cols || cols.length < 7) return null;
+    if(!cols || cols.length < 7){
 
-        return {
-
-            englishQuestion:
-              cols[0].replace(/"/g, "").trim(),
-
-            hindiQuestion:
-              cols[1].replace(/"/g, "").trim(),
-
-            options: [
-
-              cols[2].replace(/"/g, "").trim(),
-
-              cols[3].replace(/"/g, "").trim(),
-
-              cols[4].replace(/"/g, "").trim(),
-
-              cols[5].replace(/"/g, "").trim()
-
-            ],
-
-            answer:
-              cols[6].replace(/"/g, "").trim()
-
-        };
-
-    }).filter(q => q !== null);
-
-    if(questions.length > 0){
-
-        showQuestion();
-
-    }else{
-
-        document.getElementById("question").innerHTML =
-        "No Questions Found";
+      return null;
 
     }
+
+    return {
+
+      englishQuestion:
+      cols[0].replace(/"/g, "").trim(),
+
+      hindiQuestion:
+      cols[1].replace(/"/g, "").trim(),
+
+      options: [
+
+        cols[2].replace(/"/g, "").trim(),
+
+        cols[3].replace(/"/g, "").trim(),
+
+        cols[4].replace(/"/g, "").trim(),
+
+        cols[5].replace(/"/g, "").trim()
+
+      ],
+
+      answer:
+      cols[6].replace(/"/g, "").trim()
+
+    };
+
+  }).filter(q => q !== null);
+
+
+  if(questions.length > 0){
+
+    showQuestion();
+
+  }else{
+
+    document.getElementById("question")
+    .innerText = "No Questions Found";
+
+  }
 
 })
 
 .catch(error => {
 
-    document.getElementById("question").innerHTML =
-    "Failed To Load Questions";
+  document.getElementById("question")
+  .innerText = "Failed To Load Questions";
 
-    console.log(error);
+  console.log(error);
 
 });
-
 
 
 
@@ -227,44 +257,45 @@ fetch(sheetURL)
 
 function showQuestion(){
 
-    const q = questions[currentQuestion];
+  const q = questions[currentQuestion];
 
-    document.getElementById("question").innerText =
+  document.getElementById("question").innerText =
 
-      currentLanguage === "english"
-      ? q.englishQuestion
-      : q.hindiQuestion;
+    currentLanguage === "english"
+    ? q.englishQuestion
+    : q.hindiQuestion;
 
-    const optionsDiv =
-      document.getElementById("options");
+  const optionsDiv =
+  document.getElementById("options");
 
-    optionsDiv.innerHTML = "";
+  optionsDiv.innerHTML = "";
 
-    q.options.forEach(option => {
+  q.options.forEach(option => {
 
-        const btn = document.createElement("button");
+    const btn =
+    document.createElement("button");
 
-        btn.classList.add("option");
+    btn.classList.add("option");
 
-        btn.innerText = option;
+    btn.innerText = option;
 
-        if(userAnswers[currentQuestion] === option){
+    if(userAnswers[currentQuestion] === option){
 
-            btn.classList.add("selected");
+      btn.classList.add("selected");
 
-        }
+    }
 
-        btn.onclick = () => {
+    btn.onclick = () => {
 
-            userAnswers[currentQuestion] = option;
+      userAnswers[currentQuestion] = option;
 
-            showQuestion();
+      showQuestion();
 
-        };
+    };
 
-        optionsDiv.appendChild(btn);
+    optionsDiv.appendChild(btn);
 
-    });
+  });
 
 }
 
@@ -274,13 +305,13 @@ function showQuestion(){
 
 function nextQuestion(){
 
-    if(currentQuestion < questions.length - 1){
+  if(currentQuestion < questions.length - 1){
 
-        currentQuestion++;
+    currentQuestion++;
 
-        showQuestion();
+    showQuestion();
 
-    }
+  }
 
 }
 
@@ -290,44 +321,45 @@ function nextQuestion(){
 
 function prevQuestion(){
 
-    if(currentQuestion > 0){
+  if(currentQuestion > 0){
 
-        currentQuestion--;
+    currentQuestion--;
 
-        showQuestion();
+    showQuestion();
 
-    }
+  }
 
 }
 
 
 
-// MARK FOR REVIEW
+// MARK REVIEW
 
 function markReview(){
 
-    if(!reviewQuestions.includes(currentQuestion)){
+  if(!reviewQuestions.includes(currentQuestion)){
 
-        reviewQuestions.push(currentQuestion);
+    reviewQuestions.push(currentQuestion);
 
-        alert("Question Marked For Review");
+    alert("Question Marked For Review");
 
-    }
+  }
 
 }
 
 
 
-// LANGUAGE TOGGLE
+// LANGUAGE BUTTON
 
 function toggleLanguage(){
 
-    currentLanguage =
-    currentLanguage === "english"
-    ? "hindi"
-    : "english";
+  currentLanguage =
 
-    showQuestion();
+  currentLanguage === "english"
+  ? "hindi"
+  : "english";
+
+  showQuestion();
 
 }
 
@@ -337,20 +369,21 @@ function toggleLanguage(){
 
 function submitQuiz(){
 
-    score = 0;
+  score = 0;
 
-    questions.forEach((q,index)=>{
+  questions.forEach((q,index)=>{
 
-        if(userAnswers[index] === q.answer){
+    if(userAnswers[index] === q.answer){
 
-            score++;
+      score++;
 
-        }
+    }
 
-    });
+  });
 
-    document.getElementById("result").innerHTML =
-    `Your Score: ${score} / ${questions.length}`;
+  document.getElementById("result").innerHTML =
+
+  `Your Score: ${score} / ${questions.length}`;
 
 }
 
@@ -362,26 +395,30 @@ let timeLeft = 600;
 
 const timer = setInterval(()=>{
 
-    let minutes = Math.floor(timeLeft / 60);
+  let minutes =
+  Math.floor(timeLeft / 60);
 
-    let seconds = timeLeft % 60;
+  let seconds =
+  timeLeft % 60;
 
-    seconds = seconds < 10
-    ? "0" + seconds
-    : seconds;
+  seconds =
+  seconds < 10
+  ? "0" + seconds
+  : seconds;
 
-    document.getElementById("timer").innerText =
-    `${minutes}:${seconds}`;
+  document.getElementById("timer").innerText =
 
-    timeLeft--;
+  `${minutes}:${seconds}`;
 
-    if(timeLeft < 0){
+  timeLeft--;
 
-        clearInterval(timer);
+  if(timeLeft < 0){
 
-        submitQuiz();
+    clearInterval(timer);
 
-    }
+    submitQuiz();
+
+  }
 
 },1000);
 
