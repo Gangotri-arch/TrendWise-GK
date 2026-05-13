@@ -1,317 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art & Culture Quiz</title>
 
-  <meta charset="UTF-8">
+<style>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+body{
+  font-family:Arial;
+  background:#f2f2f2;
+  padding:20px;
+}
 
-  <title>Art & Culture Quiz</title>
+.quiz-box{
+  max-width:700px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+}
 
-  <style>
+#question{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
 
-    body{
-      font-family: Arial, sans-serif;
-      background:#f2f2f2;
-      margin:0;
-      padding:20px;
-    }
+.option{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#e0e0e0;
+  cursor:pointer;
+  text-align:left;
+  font-size:16px;
+}
 
-    .quiz-container{
-      max-width:800px;
-      margin:auto;
-      background:white;
-      padding:20px;
-      border-radius:12px;
-      box-shadow:0 0 10px rgba(0,0,0,0.2);
-    }
+.option:hover{
+  background:#d0d0d0;
+}
 
-    h1{
-      text-align:center;
-      margin-bottom:20px;
-      color:#333;
-    }
+.selected{
+  background:skyblue !important;
+}
 
-    #question{
-      font-size:24px;
-      font-weight:bold;
-      margin-bottom:20px;
-      color:#222;
-    }
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:white;
+  font-size:16px;
+}
 
-    .option{
-      display:block;
-      width:100%;
-      padding:14px;
-      margin:10px 0;
-      border:none;
-      border-radius:8px;
-      background:#e0e0e0;
-      cursor:pointer;
-      text-align:left;
-      font-size:17px;
-      transition:0.3s;
-    }
+.next{
+  background:green;
+}
 
-    .option:hover{
-      background:#d0d0d0;
-    }
+.prev{
+  background:blue;
+}
 
-    .selected{
-      background:skyblue !important;
-    }
+.submit{
+  background:red;
+}
 
-    .buttons{
-      margin-top:20px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
+#result{
+  margin-top:20px;
+  font-size:28px;
+  font-weight:bold;
+  text-align:center;
+}
 
-    button{
-      padding:12px 18px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      color:white;
-      font-size:16px;
-    }
-
-    .prev-btn{
-      background:#007bff;
-    }
-
-    .next-btn{
-      background:#28a745;
-    }
-
-    .submit-btn{
-      background:#dc3545;
-    }
-
-    #result{
-      margin-top:25px;
-      text-align:center;
-      font-size:28px;
-      font-weight:bold;
-      color:#222;
-    }
-
-  </style>
+</style>
 
 </head>
 
 <body>
 
-<div class="quiz-container">
+<div class="quiz-box">
 
-  <h1>Art & Culture Quiz</h1>
+<h1>Art & Culture Quiz</h1>
 
-  <div id="question">
+<div id="question"></div>
 
-    Loading Questions...
+<div id="options"></div>
 
-  </div>
+<button class="prev" onclick="prevQuestion()">
+Previous
+</button>
 
-  <div id="options"></div>
+<button class="next" onclick="nextQuestion()">
+Next
+</button>
 
-  <div class="buttons">
+<button class="submit" onclick="submitQuiz()">
+Submit
+</button>
 
-    <button
-    class="prev-btn"
-    onclick="prevQuestion()">
-
-      Previous
-
-    </button>
-
-    <button
-    class="next-btn"
-    onclick="nextQuestion()">
-
-      Next
-
-    </button>
-
-    <button
-    class="submit-btn"
-    onclick="submitQuiz()">
-
-      Submit
-
-    </button>
-
-  </div>
-
-  <div id="result"></div>
+<div id="result"></div>
 
 </div>
 
 <script>
 
-const csvUrl =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vTnrbtJ8lD8k8Unj8NULCyWC6Ov8uJ6OdM-L7LtlFS_y-qvDhc5Kr04y7u4RFug48xQzQ9gIyXA2oxc/pub?output=csv";
+const questions = [
 
-let questions = [];
+{
+question:"Who built Taj Mahal?",
+options:["Akbar","Shah Jahan","Humayun","Aurangzeb"],
+answer:"Shah Jahan"
+},
+
+{
+question:"Which dance belongs to Kerala?",
+options:["Bharatanatyam","Kathak","Kathakali","Garba"],
+answer:"Kathakali"
+},
+
+{
+question:"Who wrote Ramayana?",
+options:["Kalidas","Tulsidas","Valmiki","Kabir"],
+answer:"Valmiki"
+},
+
+{
+question:"Which monument is in Agra?",
+options:["Qutub Minar","India Gate","Taj Mahal","Gateway of India"],
+answer:"Taj Mahal"
+}
+
+];
 
 let currentQuestion = 0;
 
 let answers = [];
 
-async function loadQuiz() {
+function showQuestion(){
 
-  try {
+const q = questions[currentQuestion];
 
-    const response = await fetch(csvUrl);
+document.getElementById("question")
+.innerText = q.question;
 
-    const data = await response.text();
+const optionsDiv =
+document.getElementById("options");
 
-    const rows =
-    data.trim().split("\n").slice(1);
+optionsDiv.innerHTML = "";
 
-    questions = rows.map(row => {
+q.options.forEach(option => {
 
-      const cols = row.split(",");
+const btn =
+document.createElement("button");
 
-      return {
+btn.className = "option";
 
-        question: cols[0],
+btn.innerText = option;
 
-        options: [
+if(answers[currentQuestion] === option){
 
-          cols[1],
-          cols[2],
-          cols[3],
-          cols[4]
-
-        ],
-
-        answer: cols[5]
-
-      };
-
-    });
-
-    showQuestion();
-
-  }
-
-  catch(error) {
-
-    document.getElementById("question")
-    .innerText =
-    "Failed To Load Questions";
-
-    console.log(error);
-
-  }
+btn.classList.add("selected");
 
 }
 
-function showQuestion() {
+btn.onclick = () => {
 
-  if(questions.length === 0){
+answers[currentQuestion] = option;
 
-    document.getElementById("question")
-    .innerText =
-    "No Questions Found";
+showQuestion();
 
-    return;
+};
 
-  }
+optionsDiv.appendChild(btn);
 
-  const q = questions[currentQuestion];
-
-  document.getElementById("question")
-  .innerText = q.question;
-
-  const optionsDiv =
-  document.getElementById("options");
-
-  optionsDiv.innerHTML = "";
-
-  q.options.forEach(option => {
-
-    const btn =
-    document.createElement("button");
-
-    btn.innerText = option;
-
-    btn.className = "option";
-
-    if(answers[currentQuestion] === option){
-
-      btn.classList.add("selected");
-
-    }
-
-    btn.onclick = () => {
-
-      answers[currentQuestion] = option;
-
-      showQuestion();
-
-    };
-
-    optionsDiv.appendChild(btn);
-
-  });
+});
 
 }
 
 function nextQuestion(){
 
-  if(currentQuestion < questions.length - 1){
+if(currentQuestion < questions.length - 1){
 
-    currentQuestion++;
+currentQuestion++;
 
-    showQuestion();
+showQuestion();
 
-  }
+}
 
 }
 
 function prevQuestion(){
 
-  if(currentQuestion > 0){
+if(currentQuestion > 0){
 
-    currentQuestion--;
+currentQuestion--;
 
-    showQuestion();
+showQuestion();
 
-  }
+}
 
 }
 
 function submitQuiz(){
 
-  let score = 0;
+let score = 0;
 
-  questions.forEach((q,index)=>{
+questions.forEach((q,index)=>{
 
-    if(answers[index] === q.answer){
+if(answers[index] === q.answer){
 
-      score++;
-
-    }
-
-  });
-
-  document.getElementById("result")
-  .innerText =
-  "Your Score: "
-  + score +
-  "/" +
-  questions.length;
+score++;
 
 }
 
-loadQuiz();
+});
+
+document.getElementById("result")
+.innerText =
+"Your Score: " + score + "/" + questions.length;
+
+}
+
+showQuestion();
 
 </script>
 
 </body>
-
 </html>
