@@ -1,103 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Art & Culture Quiz</title>
 
 <style>
-
-body{
-  font-family:Arial;
-  background:#f2f2f2;
-  padding:20px;
-}
-
-.quiz-box{
-  max-width:700px;
-  margin:auto;
-  background:white;
-  padding:20px;
-  border-radius:10px;
-}
-
-#question{
-  font-size:24px;
-  font-weight:bold;
-  margin-bottom:20px;
-}
-
-.option{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#e0e0e0;
-  cursor:pointer;
-  text-align:left;
-  font-size:16px;
-}
-
-.selected{
-  background:skyblue !important;
-}
-
-button{
-  padding:10px 15px;
-  margin:5px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  color:white;
-  font-size:16px;
-}
-
-.next{
-  background:green;
-}
-
-.prev{
-  background:blue;
-}
-
-.submit{
-  background:red;
-}
-
-#result{
-  margin-top:20px;
-  font-size:28px;
-  font-weight:bold;
-  text-align:center;
-}
-
+body{font-family:Arial;background:#f4f4f4;padding:20px}
+.box{max-width:700px;margin:auto;background:white;padding:20px;border-radius:10px}
+#q{font-size:22px;font-weight:bold;margin-bottom:15px}
+.option{display:block;width:100%;margin:8px 0;padding:10px;background:#eee;border:none;border-radius:6px;cursor:pointer}
+.option:hover{background:#ddd}
+.selected{background:skyblue}
+button{padding:10px 15px;margin:5px;border:none;border-radius:6px;cursor:pointer}
+#result{margin-top:20px;font-size:22px;font-weight:bold}
 </style>
 
 </head>
 
 <body>
 
-<div class="quiz-box">
+<div class="box">
 
-<h1>Art & Culture Quiz</h1>
+<h2>Art & Culture Quiz</h2>
 
-<div id="question"></div>
-
+<div id="q">Loading...</div>
 <div id="options"></div>
 
-<button class="prev" onclick="prevQuestion()">
-Previous
-</button>
-
-<button class="next" onclick="nextQuestion()">
-Next
-</button>
-
-<button class="submit" onclick="submitQuiz()">
-Submit
-</button>
+<button onclick="prev()">Previous</button>
+<button onclick="next()">Next</button>
+<button onclick="submitQuiz()">Submit</button>
 
 <div id="result"></div>
 
@@ -105,118 +36,72 @@ Submit
 
 <script>
 
-const questions = [
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTnrbtJ8lD8k8Unj8NULCyWC6Ov8uJ6OdM-L7LtlFS_y-qvDhc5Kr04y7u4RFug48xQzQ9gIyXA2oxc/pub?output=csv";
 
-{
-question:"Who built Taj Mahal?",
-options:["Akbar","Shah Jahan","Humayun","Aurangzeb"],
-answer:"Shah Jahan"
-},
-
-{
-question:"Which dance belongs to Kerala?",
-options:["Bharatanatyam","Kathak","Kathakali","Garba"],
-answer:"Kathakali"
-},
-
-{
-question:"Who wrote Ramayana?",
-options:["Kalidas","Tulsidas","Valmiki","Kabir"],
-answer:"Valmiki"
-}
-
-];
-
-let currentQuestion = 0;
-
+let data = [];
+let index = 0;
 let answers = [];
 
-function showQuestion(){
+async function load(){
+  try{
+    let res = await fetch(url);
+    let text = await res.text();
 
-const q = questions[currentQuestion];
+    let rows = text.trim().split("\n").slice(1);
 
-document.getElementById("question")
-.innerText = q.question;
+    data = rows.map(r=>{
+      let c = r.split(",");
+      return {
+        q:c[0],
+        options:[c[1],c[2],c[3],c[4]],
+        answer:c[5]
+      }
+    });
 
-const optionsDiv =
-document.getElementById("options");
-
-optionsDiv.innerHTML = "";
-
-q.options.forEach(option => {
-
-const btn =
-document.createElement("button");
-
-btn.className = "option";
-
-btn.innerText = option;
-
-if(answers[currentQuestion] === option){
-
-btn.classList.add("selected");
-
+    show();
+  }catch(e){
+    document.getElementById("q").innerText="Failed to load questions";
+    console.log(e);
+  }
 }
 
-btn.onclick = () => {
+function show(){
+  let q = data[index];
+  document.getElementById("q").innerText = q.q;
 
-answers[currentQuestion] = option;
+  let op = document.getElementById("options");
+  op.innerHTML="";
 
-showQuestion();
+  q.options.forEach(o=>{
+    let b = document.createElement("button");
+    b.innerText=o;
+    b.className="option";
 
-};
+    if(answers[index]==o) b.classList.add("selected");
 
-optionsDiv.appendChild(btn);
+    b.onclick=()=>{
+      answers[index]=o;
+      show();
+    }
 
-});
-
+    op.appendChild(b);
+  });
 }
 
-function nextQuestion(){
-
-if(currentQuestion < questions.length - 1){
-
-currentQuestion++;
-
-showQuestion();
-
-}
-
-}
-
-function prevQuestion(){
-
-if(currentQuestion > 0){
-
-currentQuestion--;
-
-showQuestion();
-
-}
-
-}
+function next(){ if(index<data.length-1){index++;show();} }
+function prev(){ if(index>0){index--;show();} }
 
 function submitQuiz(){
+  let score=0;
+  data.forEach((q,i)=>{
+    if(answers[i]==q.answer) score++;
+  });
 
-let score = 0;
-
-questions.forEach((q,index)=>{
-
-if(answers[index] === q.answer){
-
-score++;
-
+  document.getElementById("result").innerText =
+  "Score: "+score+"/"+data.length;
 }
 
-});
-
-document.getElementById("result")
-.innerText =
-"Your Score: " + score + "/" + questions.length;
-
-}
-
-showQuestion();
+load();
 
 </script>
 
