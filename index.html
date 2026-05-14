@@ -1,168 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Quiz Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
+<title>Quiz Website</title>
 
-        body{
-            margin:0;
-            padding:0;
-            font-family:Arial, sans-serif;
-            background:#f4f4f4;
-            text-align:center;
-        }
+<style>
 
-        /* Language Button */
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial;
+    background:#f2f2f2;
+    text-align:center;
+}
 
-        #langBtn{
-            position:absolute;
-            top:20px;
-            right:20px;
-            padding:10px 20px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:8px;
-            cursor:pointer;
-            font-size:16px;
-        }
+/* Language Button */
 
-        #langBtn:hover{
-            background:#0056b3;
-        }
+#langBtn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:12px 20px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
 
-        /* Main Section */
+/* Main Content */
 
-        .container{
-            margin-top:100px;
-            padding:20px;
-        }
+.container{
+    margin-top:120px;
+}
 
-        h1{
-            color:#222;
-            font-size:40px;
-        }
+h1{
+    font-size:40px;
+    color:#222;
+}
 
-        p{
-            color:#555;
-            font-size:20px;
-        }
+p{
+    font-size:20px;
+    color:#555;
+}
 
-        /* Buttons */
+.btn{
+    display:inline-block;
+    margin:15px;
+    padding:15px 25px;
+    background:green;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:20px;
+}
 
-        .btn{
-            display:inline-block;
-            margin:15px;
-            padding:15px 30px;
-            background:#28a745;
-            color:white;
-            text-decoration:none;
-            border-radius:10px;
-            font-size:20px;
-            transition:0.3s;
-        }
+</style>
 
-        .btn:hover{
-            background:#1e7e34;
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <!-- Language Button -->
+<!-- Language Button -->
 
-    <button onclick="toggleLanguage()" id="langBtn">
-        हिन्दी
-    </button>
+<button id="langBtn" onclick="toggleLanguage()">
+हिन्दी
+</button>
 
-    <!-- Main Content -->
+<div class="container">
 
-    <div class="container">
+<h1 id="title">
+Welcome to My Quiz Website
+</h1>
 
-        <h1 id="title">
-            Welcome to My Quiz Website
-        </h1>
+<p id="desc">
+Start your preparation with quizzes and notes.
+</p>
 
-        <p id="desc">
-            Start your preparation with quizzes and notes.
-        </p>
+<a href="maths.html" class="btn" id="mathBtn">
+Maths Quiz
+</a>
 
-        <!-- Quiz Buttons -->
+<a href="reasoning.html" class="btn" id="reasonBtn">
+Reasoning Quiz
+</a>
 
-        <a href="maths.html" class="btn" id="mathBtn">
-            Maths Quiz
-        </a>
+<a href="art-culture.html" class="btn" id="artBtn">
+Art & Culture Quiz
+</a>
 
-        <a href="reasoning.html" class="btn" id="reasonBtn">
-            Reasoning Quiz
-        </a>
+</div>
 
-        <a href="art-culture.html" class="btn" id="artBtn">
-            Art & Culture Quiz
-        </a>
+<script>
 
-    </div>
+let currentLanguage = "en";
 
-    <!-- JavaScript -->
+function toggleLanguage(){
 
-    <script>
+    if(currentLanguage === "en"){
 
-        let currentLanguage = "en";
+        document.getElementById("title").innerText =
+        "मेरी क्विज वेबसाइट में आपका स्वागत है";
 
-        function toggleLanguage(){
+        document.getElementById("desc").innerText =
+        "क्विज और नोट्स के साथ तैयारी शुरू करें";
 
-            if(currentLanguage === "en"){
+        document.getElementById("mathBtn").innerText =
+        "गणित क्विज";
 
-                document.getElementById("title").innerText =
-                    "मेरी क्विज वेबसाइट में आपका स्वागत है";
+        document.getElementById("reasonBtn").innerText =
+        "रीजनिंग क्विज";
 
-                document.getElementById("desc").innerText =
-                    "क्विज़ और नोट्स के साथ अपनी तैयारी शुरू करें।";
+        document.getElementById("artBtn").innerText =
+        "कला एवं संस्कृति क्विज";
 
-                document.getElementById("mathBtn").innerText =
-                    "गणित क्विज";
+        document.getElementById("langBtn").innerText =
+        "English";
 
-                document.getElementById("reasonBtn").innerText =
-                    "रीजनिंग क्विज";
+        currentLanguage = "hi";
 
-                document.getElementById("artBtn").innerText =
-                    "कला एवं संस्कृति क्विज";
+    }
 
-                document.getElementById("langBtn").innerText =
-                    "English";
+    else{
 
-                currentLanguage = "hi";
+        document.getElementById("title").innerText =
+        "Welcome to My Quiz Website";
 
-            } else {
+        document.getElementById("desc").innerText =
+        "Start your preparation with quizzes and notes.";
 
-                document.getElementById("title").innerText =
-                    "Welcome to My Quiz Website";
+        document.getElementById("mathBtn").innerText =
+        "Maths Quiz";
 
-                document.getElementById("desc").innerText =
-                    "Start your preparation with quizzes and notes.";
+        document.getElementById("reasonBtn").innerText =
+        "Reasoning Quiz";
 
-                document.getElementById("mathBtn").innerText =
-                    "Maths Quiz";
+        document.getElementById("artBtn").innerText =
+        "Art & Culture Quiz";
 
-                document.getElementById("reasonBtn").innerText =
-                    "Reasoning Quiz";
+        document.getElementById("langBtn").innerText =
+        "हिन्दी";
 
-                document.getElementById("artBtn").innerText =
-                    "Art & Culture Quiz";
+        currentLanguage = "en";
+    }
 
-                document.getElementById("langBtn").innerText =
-                    "हिन्दी";
+}
 
-                currentLanguage = "en";
-            }
-        }
-
-    </script>
+</script>
 
 </body>
 </html>
