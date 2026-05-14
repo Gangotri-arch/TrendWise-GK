@@ -1,185 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrendWise GK</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Quiz Website</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family: Arial, sans-serif;
-    }
+    <style>
 
-    body{
-      background:#f4f7fb;
-      color:#333;
-    }
+        body{
+            margin:0;
+            padding:0;
+            font-family:Arial, sans-serif;
+            background:#f4f4f4;
+            text-align:center;
+        }
 
-    header{
-      background:linear-gradient(135deg,#007bff,#00c6ff);
-      color:white;
-      text-align:center;
-      padding:60px 20px;
-    }
+        /* Language Button */
 
-    header h1{
-      font-size:48px;
-      margin-bottom:15px;
-    }
+        #langBtn{
+            position:absolute;
+            top:20px;
+            right:20px;
+            padding:10px 20px;
+            background:#007bff;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+        }
 
-    header p{
-      font-size:20px;
-      margin-bottom:25px;
-    }
+        #langBtn:hover{
+            background:#0056b3;
+        }
 
-    .hero-btn{
-      padding:12px 25px;
-      background:white;
-      color:#007bff;
-      border:none;
-      border-radius:8px;
-      font-size:18px;
-      cursor:pointer;
-      font-weight:bold;
-    }
+        /* Main Section */
 
-    .section-title{
-      text-align:center;
-      margin:50px 0 30px;
-      font-size:32px;
-      color:#007bff;
-    }
+        .container{
+            margin-top:100px;
+            padding:20px;
+        }
 
-    .cards{
-      width:90%;
-      margin:auto;
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:25px;
-      margin-bottom:60px;
-    }
+        h1{
+            color:#222;
+            font-size:40px;
+        }
 
-    .card{
-      background:white;
-      padding:25px;
-      border-radius:15px;
-      text-align:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
-      transition:0.3s;
-    }
+        p{
+            color:#555;
+            font-size:20px;
+        }
 
-    .card:hover{
-      transform:translateY(-8px);
-    }
+        /* Buttons */
 
-    .card h2{
-      margin:15px 0;
-      color:#007bff;
-    }
+        .btn{
+            display:inline-block;
+            margin:15px;
+            padding:15px 30px;
+            background:#28a745;
+            color:white;
+            text-decoration:none;
+            border-radius:10px;
+            font-size:20px;
+            transition:0.3s;
+        }
 
-    .card p{
-      color:#555;
-      margin-bottom:15px;
-    }
+        .btn:hover{
+            background:#1e7e34;
+        }
 
-    .card button{
-      padding:10px 20px;
-      border:none;
-      background:#007bff;
-      color:white;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:16px;
-    }
-
-    footer{
-      background:#222;
-      color:white;
-      text-align:center;
-      padding:20px;
-      margin-top:40px;
-    }
-  </style>
+    </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>📘 TrendWise GK</h1>
-    <p>Learn • Practice • Achieve</p>
+    <!-- Language Button -->
 
-    <a href="quiz.html">
-      <button class="hero-btn">Start Learning</button>
-    </a>
-  </header>
+    <button onclick="toggleLanguage()" id="langBtn">
+        हिन्दी
+    </button>
 
-  <h1 class="section-title">Our Features</h1>
+    <!-- Main Content -->
 
-  <div class="cards">
+    <div class="container">
 
-    <div class="card">
-      <h2>📘 Theory</h2>
-      <p>Topic-wise detailed notes for easy learning.</p>
+        <h1 id="title">
+            Welcome to My Quiz Website
+        </h1>
 
-      <a href="theory.html">
-        <button>Read Theory</button>
-      </a>
+        <p id="desc">
+            Start your preparation with quizzes and notes.
+        </p>
+
+        <!-- Quiz Buttons -->
+
+        <a href="maths.html" class="btn" id="mathBtn">
+            Maths Quiz
+        </a>
+
+        <a href="reasoning.html" class="btn" id="reasonBtn">
+            Reasoning Quiz
+        </a>
+
+        <a href="art-culture.html" class="btn" id="artBtn">
+            Art & Culture Quiz
+        </a>
+
     </div>
 
-    <div class="card">
-      <h2>📝 Quiz</h2>
-      <p>Practice MCQs and improve your knowledge.</p>
+    <!-- JavaScript -->
 
-      <a href="quiz.html">
-        <button>Start Quiz</button>
-      </a>
-    </div>
+    <script>
 
-    <div class="card">
-      <h2>🎯 Practice Test</h2>
-      <p>Attempt full mock tests and track performance.</p>
+        let currentLanguage = "en";
 
-      <a href="test.html">
-        <button>Practice Test</button>
-      </a>
-    </div>
+        function toggleLanguage(){
 
-    <div class="card">
-      <h2>🔥 Current Affairs</h2>
-      <p>Stay updated with daily current affairs.</p>
+            if(currentLanguage === "en"){
 
-      <a href="current.html">
-        <button>Current Affairs</button>
-      </a>
-    </div>
+                document.getElementById("title").innerText =
+                    "मेरी क्विज वेबसाइट में आपका स्वागत है";
 
-    <div class="card">
-      <h2>Maths</h2>
-      <p>Learn and Practice.</p>
+                document.getElementById("desc").innerText =
+                    "क्विज़ और नोट्स के साथ अपनी तैयारी शुरू करें।";
 
-      <a href="maths.html">
-        <button>Practice Questions and Theroy</button>
-      </a>
-     </div>
+                document.getElementById("mathBtn").innerText =
+                    "गणित क्विज";
 
-    <div class="card">
-      <h2>Reasoning</h2>
-      <p>Learn and Practice.</p>
+                document.getElementById("reasonBtn").innerText =
+                    "रीजनिंग क्विज";
 
-      <a href="Reasoning.html">
-        <button>Practice Questions and Theroy</button>
-      </a>
-     </div>
+                document.getElementById("artBtn").innerText =
+                    "कला एवं संस्कृति क्विज";
 
+                document.getElementById("langBtn").innerText =
+                    "English";
 
-  </div>
+                currentLanguage = "hi";
 
-  <footer>
-    <p>© 2026 TrendWise GK | All Rights Reserved</p>
-  </footer>
+            } else {
+
+                document.getElementById("title").innerText =
+                    "Welcome to My Quiz Website";
+
+                document.getElementById("desc").innerText =
+                    "Start your preparation with quizzes and notes.";
+
+                document.getElementById("mathBtn").innerText =
+                    "Maths Quiz";
+
+                document.getElementById("reasonBtn").innerText =
+                    "Reasoning Quiz";
+
+                document.getElementById("artBtn").innerText =
+                    "Art & Culture Quiz";
+
+                document.getElementById("langBtn").innerText =
+                    "हिन्दी";
+
+                currentLanguage = "en";
+            }
+        }
+
+    </script>
 
 </body>
 </html>
