@@ -491,9 +491,12 @@ button,
   .quiz-right{
     border-left:none;
     padding-left:0;
-  }
-  .lang-buttons{
-  top:60px;
+    margin-top:90px !important;
+}
+
+.lang-buttons{
+  top:55px !important;
+  right:10px !important;
 }
 
 }
