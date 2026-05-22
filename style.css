@@ -475,6 +475,9 @@ button,
   width:25%;
   border-left:1px solid #ddd;
   padding-left:15px;
+  margin-top:70px;
+  position:relative;
+z-index:1;
 }
 
 @media(max-width:768px){
@@ -495,7 +498,7 @@ button,
 }
 
 .lang-buttons{
-  top:55px !important;
+  top:10px !important;
   right:10px !important;
 }
 
