@@ -505,3 +505,14 @@ z-index:1;
   }
 
 }
+#liveCounterBox{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#111827;
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:14px;
+  z-index:9999;
+}
