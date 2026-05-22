@@ -522,6 +522,17 @@ justify-content:center;
 margin-bottom:15px;
 
 }
+  .lang-buttons{
+  margin-bottom:25px;
+}
+
+.quiz-box{
+  padding-top:20px;
+}
+
+.quiz-right{
+  margin-top:30px;
+}
   }
 
 }
