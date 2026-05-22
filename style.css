@@ -494,12 +494,18 @@ z-index:1;
   .quiz-right{
     border-left:none;
     padding-left:0;
-    margin-top:90px !important;
-}
+    margin-top:120px;
+  }
 
-.lang-buttons{
-  top:10px !important;
-  right:10px !important;
+ .lang-buttons{
+
+display:flex;
+gap:10px;
+
+justify-content:flex-end;
+
+margin-bottom:15px;
+
 }
 
 }
