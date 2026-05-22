@@ -205,7 +205,22 @@ footer{
   nav a{
     margin-left:10px;
   }
+.lang-buttons{
 
+top:10px;
+right:10px;
+
+flex-direction:column;
+
+}
+
+.quiz-right{
+
+margin-top:120px;
+
+width:100%;
+
+}
 }
 /* =========================
    QUIZ PAGE FIX
