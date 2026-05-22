@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TrendWise GK</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="lang-buttons">
+
+  <button onclick="translatePage('en')">
+    English
+  </button>
+
+  <button onclick="translatePage('hi')">
+    हिन्दी
+  </button>
+
+</div>
+
+<div id="google_translate_element" style="display:none;"></div>
+<!-- HEADER -->
+
+<header class="header">
+
+  <div class="logo">
+    TrendWise GK
+  </div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#subjects">Subjects</a>
+    <a href="#about">About</a>
+  </nav>
+
+</header>
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <h1>
+      Master Your Competitive Exam Preparation
+    </h1>
+
+    <p>
+      Practice quizzes, improve GK, and boost your score with TrendWise GK.
+    </p>
+
+    <button onclick="scrollToSubjects()">
+      Start Learning
+    </button>
+
+  </div>
+
+</section>
+
+<!-- SUBJECT SECTION -->
+
+<section id="subjects" class="subjects-section">
+
+  <h2>Quiz Subjects</h2>
+
+  <div class="grid" id="subjectList"></div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+  <div class="feature-card">
+    <h3>Live Quiz Practice</h3>
+    <p>Practice exam-level MCQs with timer.</p>
+  </div>
+
+  <div class="feature-card">
+    <h3>Detailed Explanations</h3>
+    <p>Understand every answer clearly.</p>
+  </div>
+
+  <div class="feature-card">
+    <h3>Performance Tracking</h3>
+    <p>Improve your score daily.</p>
+  </div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+  <h2>About TrendWise GK</h2>
+
+  <p>
+    TrendWise GK is a modern quiz platform designed for students preparing for competitive exams.
+    Practice subject-wise quizzes and improve your accuracy with smart learning.
+  </p>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  © 2026 TrendWise GK | All Rights Reserved
+</footer>
+
+<script>
+
+/* =========================
+   SUPABASE CONFIG
+========================= */
+
+const supabaseUrl =
+"https://sorwebstkjxtophrbboh.supabase.co";
+
+const supabaseKey =
+"sb_publishable_Idq6skWlkQA8FAOS7a6OSg_ltUSaTrE";
+
+/* =========================
+   VARIABLES
+========================= */
+
+let subjects = [];
+
+/* =========================
+   LOAD SUBJECTS
+========================= */
+
+async function loadSubjects(){
+
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/subjects`,
+    {
+      headers:{
+        apikey:supabaseKey,
+        Authorization:`Bearer ${supabaseKey}`
+      }
+    }
+  );
+
+  subjects = await res.json();
+
+  renderSubjects();
+}
+
+/* =========================
+   RENDER SUBJECTS
+========================= */
+
+function renderSubjects(){
+
+  const container =
+    document.getElementById("subjectList");
+
+  container.innerHTML = "";
+
+  subjects.forEach(subject => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "card";
+
+    div.innerHTML = `
+      <h2>${subject.name}</h2>
+    `;
+
+    div.onclick = () => {
+
+      localStorage.setItem(
+        "subject_id",
+        subject.id
+      );
+
+      window.location.href =
+        "subtopics.html";
+    };
+
+    container.appendChild(div);
+
+  });
+
+}
+
+/* =========================
+   SCROLL FUNCTION
+========================= */
+
+function scrollToSubjects(){
+
+  document
+    .getElementById("subjects")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+/* =========================
+   START
+========================= */
+
+loadSubjects();
+
+</script>
+<script>
+
+function googleTranslateElementInit() {
+
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi'
+    },
+    'google_translate_element'
+  );
+
+}
+
+function translatePage(lang){
+
+  const select =
+    document.querySelector(".goog-te-combo");
+
+  if(select){
+
+    select.value = lang;
+
+    select.dispatchEvent(
+      new Event("change")
+    );
+
+  }
+
+}
+
+</script>
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+</body>
+</html>

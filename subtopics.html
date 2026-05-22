@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subtopics</title>
+
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f5f7ff;
+      margin:0;
+      padding:20px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:white;
+      padding:20px;
+      border-radius:12px;
+      text-align:center;
+      cursor:pointer;
+      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+      transition:0.2s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+<div class="lang-buttons">
+
+  <button onclick="translatePage('en')">
+    English
+  </button>
+
+  <button onclick="translatePage('hi')">
+    हिन्दी
+  </button>
+
+</div>
+
+<div id="google_translate_element" style="display:none;"></div>
+
+<h1>Subtopics</h1>
+
+<div class="grid" id="subtopicList"></div>
+
+<script>
+
+/* =========================
+   SUPABASE CONFIG
+========================= */
+
+const supabaseUrl = "https://sorwebstkjxtophrbboh.supabase.co";
+const supabaseKey = "sb_publishable_Idq6skWlkQA8FAOS7a6OSg_ltUSaTrE";
+
+/* =========================
+   VARIABLES
+========================= */
+
+const subjectId =
+  localStorage.getItem("subject_id");
+
+let subtopics = [];
+
+/* =========================
+   LOAD SUBTOPICS
+========================= */
+
+async function loadSubtopics(){
+
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/subtopics?subject_id=eq.${subjectId}`,
+    {
+      headers:{
+        apikey:supabaseKey,
+        Authorization:`Bearer ${supabaseKey}`
+      }
+    }
+  );
+
+  subtopics = await res.json();
+
+  renderSubtopics();
+}
+
+/* =========================
+   RENDER SUBTOPICS
+========================= */
+
+function renderSubtopics(){
+
+  const container =
+    document.getElementById("subtopicList");
+
+  container.innerHTML = "";
+
+  subtopics.forEach(subtopic => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "card";
+
+    div.innerHTML = `
+      <h2>${subtopic.name}</h2>
+    `;
+
+    div.onclick = () => {
+
+      localStorage.setItem(
+        "subtopic_id",
+        subtopic.id
+      );
+
+      window.location.href =
+        "tests.html";
+    };
+
+    container.appendChild(div);
+
+  });
+}
+
+/* =========================
+   START
+========================= */
+
+loadSubtopics();
+
+</script>
+<script>
+
+function googleTranslateElementInit() {
+
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi'
+    },
+    'google_translate_element'
+  );
+
+}
+
+function translatePage(lang){
+
+  const select =
+    document.querySelector(".goog-te-combo");
+
+  if(select){
+
+    select.value = lang;
+
+    select.dispatchEvent(
+      new Event("change")
+    );
+
+  }
+
+}
+
+</script>
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+</body>
+</html>
