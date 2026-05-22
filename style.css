@@ -508,13 +508,17 @@ padding-left:15px;
     padding-left:0;
     margin-top:20px;
 }
-  .lang-buttons{
+.lang-buttons{
 
-flex-direction:row;
+position:fixed;
 
-justify-content:center;
+top:20px;
+right:20px;
 
-margin-bottom:15px;
+z-index:9999;
+
+display:flex;
+gap:10px;
 
 }
   .lang-buttons{
