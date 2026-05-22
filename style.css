@@ -205,20 +205,7 @@ footer{
   nav a{
     margin-left:10px;
   }
-.lang-buttons{
 
-display:flex;
-gap:10px;
-
-justify-content:flex-end;
-
-margin-bottom:20px;
-
-position:relative;
-
-z-index:1;
-
-}
 }
 /* =========================
    QUIZ PAGE FIX
@@ -306,14 +293,15 @@ z-index:1;
 /* LANGUAGE BUTTONS */
 
 .lang-buttons{
+  position:fixed;
+  top:80px;
+  right:20px;
+  z-index:9999;
 
-display:flex;
-justify-content:flex-end;
-gap:10px;
-
-margin-bottom:20px;
-
+  display:flex;
+  gap:10px;
 }
+
 .lang-buttons button{
   background:#4f46e5;
   color:white;
@@ -484,16 +472,11 @@ button,
 }
 
 .quiz-right{
-
-width:25%;
-
-border-left:1px solid #ddd;
-
-padding-left:15px;
-
-margin-top:70px;
-
+  width:25%;
+  border-left:1px solid #ddd;
+  padding-left:15px;
 }
+
 @media(max-width:768px){
 
   .quiz-layout{
@@ -508,32 +491,6 @@ margin-top:70px;
   .quiz-right{
     border-left:none;
     padding-left:0;
-    margin-top:20px;
-}
-.lang-buttons{
-
-position:fixed;
-
-top:20px;
-right:20px;
-
-z-index:9999;
-
-display:flex;
-gap:10px;
-
-}
-  .lang-buttons{
-  margin-bottom:25px;
-}
-
-.quiz-box{
-  padding-top:20px;
-}
-
-.quiz-right{
-  margin-top:30px;
-}
   }
 
 }
