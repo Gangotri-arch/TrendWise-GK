@@ -255,5 +255,14 @@ src="https://translate.google.com/translate_a/element.js?cb=googleTranslateEleme
   <div id="liveCounterBox">
   🔴 Live Users: <span id="liveUsers">1</span>
 </div>
+  <script>
+function updateCounter(){
+  let users = Math.floor(Math.random() * 3) + 1;
+  document.getElementById("liveUsers").innerText = users;
+}
+
+setInterval(updateCounter, 5000);
+updateCounter();
+</script>
 </body>
 </html>
