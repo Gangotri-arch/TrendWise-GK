@@ -293,13 +293,17 @@ footer{
 /* LANGUAGE BUTTONS */
 
 .lang-buttons{
-  position:fixed;
-  top:80px;
-  right:20px;
-  z-index:9999;
 
-  display:flex;
-  gap:10px;
+position:fixed;
+
+top:20px;
+right:20px;
+
+z-index:9999;
+
+display:flex;
+gap:10px;
+
 }
 
 .lang-buttons button{
@@ -475,6 +479,7 @@ button,
   width:25%;
   border-left:1px solid #ddd;
   padding-left:15px;
+  margin-top:70px;
 }
 
 @media(max-width:768px){
