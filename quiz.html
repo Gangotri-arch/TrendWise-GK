@@ -359,7 +359,11 @@ const options = [
 
 const correctIndex =
 options.indexOf(q.correct_answer?.trim());
-  
+  console.log(
+  "Q:", q.question,
+  "User Index:", answers[i],
+  "Correct Index:", correctIndex
+);
 
 if(answers[i]===correctIndex){
 
