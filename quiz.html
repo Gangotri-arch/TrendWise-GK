@@ -407,6 +407,7 @@ q.option_d
 ].indexOf(q.correct_answer);
 
 const isCorrect=
+answers[i]!==null &&
 answers[i]===correctIndex;
 
 div.className="review-card";
@@ -434,7 +435,11 @@ ${q.correct_answer}
 
 <p>
 <strong>Status:</strong>
-${isCorrect ? "✅ Correct" : "❌ Wrong"}
+${answers[i]===null
+ ? "⚪ Not Attempted"
+ : isCorrect
+ ? "✅ Correct"
+ : "❌ Wrong"}
 </p>
 
 <p>
