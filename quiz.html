@@ -210,6 +210,20 @@ optDiv.appendChild(div);
 });
 
 updatePanel();
+  setTimeout(()=>{
+
+const savedLang=
+localStorage.getItem(
+"quizLanguage"
+);
+
+if(savedLang){
+
+translatePage(savedLang);
+
+}
+
+},500);
 
 }
 
@@ -516,7 +530,10 @@ includedLanguages: 'en,hi'
 }
 
 function translatePage(lang){
-
+localStorage.setItem(
+"quizLanguage",
+lang
+);
 const select=
 document.querySelector(".goog-te-combo");
 
